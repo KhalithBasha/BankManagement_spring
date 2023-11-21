@@ -1,5 +1,7 @@
 package spring.project.dto;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Entity;
@@ -23,7 +25,7 @@ public class Branch {
 	private String bname;
 	private String ifsc;
 	@OneToMany
-	private User user;
+	private List<User> listuser;
 	@ManyToOne
 	private Bank bank;
 	@OneToOne
