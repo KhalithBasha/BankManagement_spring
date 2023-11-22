@@ -1,5 +1,9 @@
 package spring.project.repo;
 
-public interface ManagerRepo {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import spring.project.dto.Manager;
+
+public interface ManagerRepo extends JpaRepository<Manager,Integer>{
 
 }

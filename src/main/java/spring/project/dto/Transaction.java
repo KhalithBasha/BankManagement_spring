@@ -20,8 +20,7 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private long amount;
-	
-	private Account ToAccount;
+	private int ToAccount;
 	private Date DateTime;
 	private TransactionType Ttype;
 	private TranstionStatus Tstatus;

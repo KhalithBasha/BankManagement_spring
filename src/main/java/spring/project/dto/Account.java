@@ -1,11 +1,14 @@
 package spring.project.dto;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,11 +24,11 @@ public class Account {
 	private long number;
 	private String password;
 	private double balance;
-	@OneToOne	
-	private User user;
-	
 	private AccountType atype;
-	private Transaction trans;
+	@OneToOne
+	private User user;
+	@OneToMany
+	private List<Transaction> trans;
 	
 	
 }
