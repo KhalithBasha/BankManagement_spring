@@ -50,7 +50,7 @@ public class BranchDao {
 		return null;
 	}
 	
-	public List<Branch> getAllProducts() {
+	public List<Branch> getAllList() {
 		return repo.findAll();
 	}
 
