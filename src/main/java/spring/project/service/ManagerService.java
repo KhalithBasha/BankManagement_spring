@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import spring.project.Config.ResponseStructure;
+import spring.project.Exception.ManagerNotFound;
 import spring.project.dao.BranchDao;
 import spring.project.dao.ManagerDao;
 import spring.project.dto.Branch;
@@ -26,8 +27,46 @@ public class ManagerService {
 		exBr.setMng(m1);
 		mdao.updateManager(m1, m1.getId());
 		rs.setData(m1);
-		rs.setMsg("Bank Has Been Saved");
+		rs.setMsg("Manager Has Been Saved");
 		rs.setStatus(HttpStatus.CREATED.value());
 		return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.CREATED);
+	}
+	
+	public ResponseEntity<ResponseStructure<Manager>> findManager(int id) 
+	{
+		ResponseStructure<Manager> rs = new ResponseStructure<>();
+		if (mdao.findManager(id)!=null) {
+		rs.setData(mdao.findManager(id));
+		rs.setMsg("Manager Has Been Found");
+		rs.setStatus(HttpStatus.FOUND.value());
+		return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.FOUND );
+		}
+		throw new ManagerNotFound("No Manager Present With the given id");
+	}
+	
+	public ResponseEntity<ResponseStructure<Manager>> updateManager(Manager m , int id) 
+	{
+		ResponseStructure<Manager> rs = new ResponseStructure<>();
+		if (mdao.findManager(id)!=null) {
+		rs.setData(mdao.updateManager(m,id));
+		rs.setMsg("Manager Has Been Updated");
+		rs.setStatus(HttpStatus.OK.value());
+		return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.OK );
+		}
+		throw new ManagerNotFound("No Manager Present With the given id");
+		
+	}
+	
+	public ResponseEntity<ResponseStructure<Manager>> deleteManager( int id) 
+	{
+		ResponseStructure<Manager> rs = new ResponseStructure<>();
+		if (mdao.findManager(id)!=null) {
+			rs.setData(mdao.deleteManager(id));
+			rs.setMsg("Manager Has Been Deleted");
+			rs.setStatus(HttpStatus.OK.value());
+			return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.OK );
+		}
+		throw new ManagerNotFound("No Manager Present With the given id"); 
+		
 	}
 }

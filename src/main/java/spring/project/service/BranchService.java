@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import spring.project.Config.ResponseStructure;
+import spring.project.Exception.BankNotFound;
+import spring.project.Exception.BranchNotFound;
 import spring.project.dao.BankDao;
 import spring.project.dao.BranchDao;
 import spring.project.dto.Bank;
@@ -29,6 +31,7 @@ public class BranchService {
 		exBank.getListbranch().add(savedBranch);
 		savedBranch.setBank(exBank);
 		bndao.updateBranch(savedBranch, savedBranch.getId());
+		
 		rs.setData(savedBranch);
 		rs.setMsg("Branch Has Been Saved");
 		rs.setStatus(HttpStatus.CREATED.value());
@@ -44,7 +47,7 @@ public class BranchService {
 		rs.setStatus(HttpStatus.FOUND.value());
 		return new ResponseEntity<ResponseStructure<Branch>>(rs,HttpStatus.FOUND );
 		}
-		return null ;//Branch not found
+		throw new BranchNotFound("No Branch Present With the given id");
 	}
 	
 	public ResponseEntity<ResponseStructure<Branch>> updateBranch(Branch b , int id) 
@@ -56,7 +59,7 @@ public class BranchService {
 		rs.setStatus(HttpStatus.OK.value());
 		return new ResponseEntity<ResponseStructure<Branch>>(rs,HttpStatus.OK );
 		}
-		return null ;//Branch not found 
+		throw new BranchNotFound("No Branch Present With the given id");
 		
 	}
 	
@@ -69,7 +72,7 @@ public class BranchService {
 			rs.setStatus(HttpStatus.OK.value());
 			return new ResponseEntity<ResponseStructure<Branch>>(rs,HttpStatus.OK );
 		}
-		return null ;//Branch not found 
+		throw new BranchNotFound("No Branch Present With the given id");
 		
 	}
 	
@@ -77,11 +80,11 @@ public class BranchService {
 		ResponseStructure<List<Branch>> rs = new ResponseStructure<>();
 		if (!bndao.getAllList().isEmpty()) {
 			rs.setData(bndao.getAllList());
-			rs.setMsg("Branch Found");
+			rs.setMsg("Branchs are Found");
 			rs.setStatus(HttpStatus.FOUND.value());
 			return new ResponseEntity<ResponseStructure<List<Branch>>>(rs,HttpStatus.FOUND );
 		}
-		 return null ;//Branch not found
+		throw new BranchNotFound("No Branch Present With the given id");
 	}
 	
 	public ResponseEntity<ResponseStructure<Branch>>  assignBank(int bId,int bhId) 
@@ -96,8 +99,8 @@ public class BranchService {
 				rs.setMsg("Bank Has Been Assigned");
 				return new ResponseEntity<ResponseStructure<Branch>>(rs,HttpStatus.OK ); 
 			}
-			return null; //Bank not found 
+			throw new BankNotFound("No Bank Present With the given id");
 		}
-		return null; //Branch not found
+		throw new BranchNotFound("No Branch Present With the given id");
 	}
 }

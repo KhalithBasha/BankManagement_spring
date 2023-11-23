@@ -2,6 +2,8 @@ package spring.project.dto;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,5 +26,6 @@ public class Manager {
 	@OneToOne
 	private Address address;
 	@OneToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Branch branch;
 }
