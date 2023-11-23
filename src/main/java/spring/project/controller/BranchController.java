@@ -7,20 +7,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import spring.project.Config.ResponseStructure;
 import spring.project.dto.Branch;
 import spring.project.service.BranchService;
-
+@RestController
+@RequestMapping("/branch")
 public class BranchController {
 	@Autowired
 	BranchService ser;
 	
 	@PostMapping
-	public ResponseEntity<ResponseStructure<Branch>> saveBranch(@RequestBody Branch Bh) 
+	public ResponseEntity<ResponseStructure<Branch>> saveBranch(@RequestBody Branch Bh,@RequestParam int bid) 
 	{
-		return ser.saveBranch(Bh);
+		return ser.saveBranch(Bh, bid);
 		
 	}
 	@DeleteMapping

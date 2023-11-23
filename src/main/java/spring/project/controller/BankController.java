@@ -35,7 +35,12 @@ public class BankController {
 		return service.updateBank(b, id);
 	}
 	
-	
+	@PutMapping("/assignbranch")
+	public  ResponseEntity<ResponseStructure<Bank>> assignBranch( @RequestParam int Id ,@RequestParam int bhId ) 
+	{
+		return service.assignBranch(Id, bhId);
+		
+	}
 	
 	
 }

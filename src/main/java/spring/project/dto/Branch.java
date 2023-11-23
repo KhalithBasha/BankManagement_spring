@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,7 @@ public class Branch {
 	private String ifsc;
 	@OneToMany
 	private List<User> listuser;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Bank bank;
 	@OneToOne
 	private Address adrs;

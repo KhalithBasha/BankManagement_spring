@@ -1,5 +1,8 @@
 package spring.project.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,12 +11,16 @@ import org.springframework.stereotype.Service;
 import spring.project.Config.ResponseStructure;
 import spring.project.Exception.BankNotFound;
 import spring.project.dao.BankDao;
+import spring.project.dao.BranchDao;
 import spring.project.dto.Bank;
+import spring.project.dto.Branch;
 
 @Service
 public class BankService {
 	@Autowired
 	BankDao dao;
+	@Autowired
+	BranchDao bdao;
 	
 	public ResponseEntity<ResponseStructure<Bank>> saveBank(Bank b) {
 		ResponseStructure<Bank> rs = new ResponseStructure<>();
@@ -45,5 +52,24 @@ public class BankService {
 			return new ResponseEntity<ResponseStructure<Bank>>(rs,HttpStatus.OK);
 		}
 		throw new BankNotFound("No Bank Present With the given id");
+	}
+	
+	public ResponseEntity<ResponseStructure<Bank>>  assignBranch(int bId,int bhId) 
+	{
+		ResponseStructure<Bank> rs = new ResponseStructure<>();
+		if (dao.findBank(bId)!=null) {
+			if (bdao.findBranch(bId)!=null) {
+				List<Branch> list = new ArrayList<>();
+				list.add(bdao.findBranch(bhId));
+				Bank b =dao.findBank(bId);
+				b.setListbranch(list);
+				rs.setData(dao.updateBank(b, bId));
+				rs.setStatus(HttpStatus.OK.value());
+				rs.setMsg("Bank Has Been Assigned");
+				return new ResponseEntity<ResponseStructure<Bank>>(rs,HttpStatus.OK ); 
+			}
+			return null; //Bank not found 
+		}
+		return null; //Branch not found
 	}
 }

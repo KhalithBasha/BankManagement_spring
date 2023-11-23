@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import spring.project.Config.ResponseStructure;
 import spring.project.dao.BankDao;
 import spring.project.dao.BranchDao;
+import spring.project.dto.Bank;
 import spring.project.dto.Branch;
 
+@Service
 public class BranchService {
 	@Autowired
 	BranchDao bndao;
@@ -18,10 +21,15 @@ public class BranchService {
 	@Autowired
 	BankDao bdao;
 	
-	public ResponseEntity<ResponseStructure<Branch>> saveBranch(Branch b) 
+	public ResponseEntity<ResponseStructure<Branch>> saveBranch(Branch b, int bId) 
 	{
 		ResponseStructure<Branch> rs = new ResponseStructure<>();
-		rs.setData(bndao.saveBranch(b));
+		Bank exBank =bdao.findBank(bId);
+		Branch savedBranch = bndao.saveBranch(b);
+		exBank.getListbranch().add(savedBranch);
+		savedBranch.setBank(exBank);
+		bndao.updateBranch(savedBranch, savedBranch.getId());
+		rs.setData(savedBranch);
 		rs.setMsg("Branch Has Been Saved");
 		rs.setStatus(HttpStatus.CREATED.value());
 		return new ResponseEntity<ResponseStructure<Branch>>(rs,HttpStatus.CREATED );
@@ -76,19 +84,19 @@ public class BranchService {
 		 return null ;//Branch not found
 	}
 	
-	public ResponseEntity<ResponseStructure<Branch>>  assignBank(int bhId ,int bId) 
+	public ResponseEntity<ResponseStructure<Branch>>  assignBank(int bId,int bhId) 
 	{
 		ResponseStructure<Branch> rs = new ResponseStructure<>();
 		if (bndao.findBranch(bhId)!=null) {
 			if (bdao.findBank(bId)!=null) {
-				Branch branch = bndao.findBranch(bhId);
-				branch.setBank(bdao.findBank(bId));
-				rs.setData(bndao.updateBranch(branch,bhId));
-				rs.setMsg("Bank Has Been Assigned to Branch");
+				Branch bh = bndao.findBranch(bhId);
+				bh.setBank(bdao.findBank(bId));
+				rs.setData(bndao.updateBranch(bh,bhId));
 				rs.setStatus(HttpStatus.OK.value());
+				rs.setMsg("Bank Has Been Assigned");
 				return new ResponseEntity<ResponseStructure<Branch>>(rs,HttpStatus.OK ); 
 			}
-			return null; //Bank Not found 
+			return null; //Bank not found 
 		}
 		return null; //Branch not found
 	}
