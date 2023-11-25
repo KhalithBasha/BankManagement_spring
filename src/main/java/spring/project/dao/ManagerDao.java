@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import spring.project.dto.Manager;
 import spring.project.repo.ManagerRepo;
 @Repository
@@ -58,6 +57,15 @@ public class ManagerDao {
 	
 	public List<Manager> getAllProducts() {
 		return repo.findAll();
+	}
+	
+	public Manager loginManager(String name,String password) {
+		Manager exManager = repo.loginManager(name);
+		if (exManager.getName()!=null) {
+			if (exManager.getPassword().equals(password)) {
+				return exManager;
+			}
+		}return null;
 	}
 
 }

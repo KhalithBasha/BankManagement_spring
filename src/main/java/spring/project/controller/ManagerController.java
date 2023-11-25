@@ -43,5 +43,11 @@ public class ManagerController {
 		return ser.updateManager(m,id);
 		
 	}
+	@GetMapping("/login")
+	public  ResponseEntity<ResponseStructure<Manager>> loginManager( @RequestParam String name, @RequestParam String password) 
+	{
+		return ser.loginManager(name, password);
+		
+	}
 	
 }

@@ -11,9 +11,12 @@ import spring.project.dao.BranchDao;
 import spring.project.dao.ManagerDao;
 import spring.project.dto.Branch;
 import spring.project.dto.Manager;
+import spring.project.repo.ManagerRepo;
 
 @Service
 public class ManagerService {
+	@Autowired
+	ManagerRepo mrepo;
 	@Autowired
 	ManagerDao mdao;
 	@Autowired
@@ -61,6 +64,11 @@ public class ManagerService {
 	{
 		ResponseStructure<Manager> rs = new ResponseStructure<>();
 		if (mdao.findManager(id)!=null) {
+			Branch br =mdao.findManager(id).getBranch();
+			br.setMng(null);
+			Manager m=mdao.findManager(id);
+			m.setBranch(null);
+			mdao.updateManager(m, id);
 			rs.setData(mdao.deleteManager(id));
 			rs.setMsg("Manager Has Been Deleted");
 			rs.setStatus(HttpStatus.OK.value());
@@ -68,5 +76,26 @@ public class ManagerService {
 		}
 		throw new ManagerNotFound("No Manager Present With the given id"); 
 		
+	}
+	
+	public ResponseEntity<ResponseStructure<Manager>> loginManager(String name,String password ){
+		ResponseStructure<Manager> rs = new ResponseStructure<>();
+		Manager m = mrepo.loginManager(name);
+		if (m.getName()!=null) {
+			if (m.getPassword().equals(password)) {
+				rs.setData(m);
+				rs.setMsg("Login Successful");
+				rs.setStatus(HttpStatus.OK.value());
+				return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.OK );
+			}
+			rs.setData(m);
+			rs.setMsg("Login Failed Due to Invalid Password");
+			rs.setStatus(HttpStatus.NOT_FOUND.value());
+			return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.NOT_FOUND);
+		}
+		rs.setData(m);
+		rs.setMsg("Login Failed Due to Manager Name Not matching");
+		rs.setStatus(HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.NOT_FOUND );
 	}
 }
