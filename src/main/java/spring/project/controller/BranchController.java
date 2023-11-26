@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import spring.project.Config.ResponseStructure;
 import spring.project.dto.Branch;
+import spring.project.dto.User;
 import spring.project.service.BranchService;
 @RestController
 @RequestMapping("/branch")
@@ -47,5 +48,9 @@ public class BranchController {
 	{
 		return ser.assignBank(bhId, bId);
 		
+	}
+	@PutMapping("/changebranch")
+	public ResponseEntity<ResponseStructure<User>> changeBranch(@RequestParam String mn,@RequestParam String mp,@RequestParam int uid,@RequestParam int bid ) {
+		return ser.changeBranch(mn, mp, uid, bid);
 	}
 }

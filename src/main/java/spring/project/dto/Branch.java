@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,10 +27,12 @@ public class Branch {
 	private int id;
 	private String bname;
 	private String ifsc;
+	@JsonIgnore
 	@OneToMany
 	private List<User> listuser;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Bank bank;
+	@JsonIgnore
 	@OneToOne
 	private Address adrs;
 	@OneToOne

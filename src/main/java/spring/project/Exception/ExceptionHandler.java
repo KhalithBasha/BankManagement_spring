@@ -32,7 +32,16 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 		ResponseStructure<String> str = new ResponseStructure<>();
 		str.setData("Manager Not Present");
 		str.setMsg(ex.getMsg());
-		str.setStatus(HttpStatus.NOT_FOUND.value());
-		return new ResponseEntity<ResponseStructure<String>>(str,HttpStatus.NOT_FOUND);
+		str.setStatus(HttpStatus.FORBIDDEN.value());
+		return new ResponseEntity<ResponseStructure<String>>(str,HttpStatus.FORBIDDEN);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> UserNotFound(UserNotFound ex){
+		ResponseStructure<String> rs = new ResponseStructure<>();
+		rs.setData("User Not present");
+		rs.setMsg(ex.getMsg());
+		rs.setStatus(HttpStatus.NOT_FOUND.value());
+		return new  ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.NOT_FOUND);
 	}
 }

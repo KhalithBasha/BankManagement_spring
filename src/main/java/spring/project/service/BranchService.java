@@ -13,8 +13,12 @@ import spring.project.Exception.BankNotFound;
 import spring.project.Exception.BranchNotFound;
 import spring.project.dao.BankDao;
 import spring.project.dao.BranchDao;
+import spring.project.dao.ManagerDao;
+import spring.project.dao.UserDao;
 import spring.project.dto.Bank;
 import spring.project.dto.Branch;
+import spring.project.dto.Manager;
+import spring.project.dto.User;
 
 @Service
 public class BranchService {
@@ -23,6 +27,12 @@ public class BranchService {
 	
 	@Autowired
 	BankDao bdao;
+	
+	@Autowired
+	ManagerDao mdao;
+	
+	@Autowired
+	UserDao udao;
 	
 	public ResponseEntity<ResponseStructure<Branch>> saveBranch(Branch b, int bId) 
 	{
@@ -68,6 +78,9 @@ public class BranchService {
 	{
 		ResponseStructure<Branch> rs = new ResponseStructure<>();
 		if (bndao.findBranch(id)!=null) {
+			Branch b = bndao.findBranch(id);
+			b.setBank(null);
+			bndao.updateBranch(b, id);
 			rs.setData(bndao.deleteBranch(id));
 			rs.setMsg("Branch Has Been Deleted");
 			rs.setStatus(HttpStatus.OK.value());
@@ -103,5 +116,32 @@ public class BranchService {
 			throw new BankNotFound("No Bank Present With the given id");
 		}
 		throw new BranchNotFound("No Branch Present With the given id");
+	}
+	
+	public ResponseEntity<ResponseStructure<User>> changeBranch(String mn,String mp,int uid,int bid){
+		ResponseStructure<User> rs = new ResponseStructure<>();
+		Manager m = mdao.loginManager(mn, mp);
+		User u = udao.findUser(uid);
+		Branch b = bndao.findBranch(bid);
+		if (m!=null) {
+			if (u!=null) {
+				if (b!=null) {
+					if (u.getBranch().getId()!=bid) {
+						Branch exB = u.getBranch();
+						exB.getListuser().remove(u);
+						bndao.updateBranch(exB, exB.getId());
+						u.setBranch(b);
+						b.getListuser().add(u);
+						bndao.updateBranch(b, bid);
+						rs.setData(udao.updateUser(u, uid));
+						rs.setMsg("Your Branch Has Been changed ");
+						rs.setStatus(HttpStatus.OK.value());
+						return new ResponseEntity<ResponseStructure<User>>(rs,HttpStatus.OK);
+					}
+					return null;
+				}return null;
+			}return null;
+		}
+		return null;
 	}
 }

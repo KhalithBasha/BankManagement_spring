@@ -23,6 +23,7 @@ public class Manager {
 	private int id;
 	private String name ;
 	private String password;
+	@JsonIgnore
 	@OneToOne
 	private Address address;
 	@OneToOne(cascade = CascadeType.ALL)

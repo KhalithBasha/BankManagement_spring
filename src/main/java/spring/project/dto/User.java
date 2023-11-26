@@ -23,7 +23,8 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String uname;
-	@OneToOne
+	@JsonIgnore
+	@OneToOne(cascade = CascadeType.ALL)
 	private Address adrs;
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
