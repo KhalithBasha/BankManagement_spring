@@ -40,24 +40,31 @@ public class AccountService {
 					rs.setData(dao.updateAccount(a, aid));
 					rs.setMsg("Changed Successfully");
 					rs.setStatus(HttpStatus.OK.value());
+					return new ResponseEntity<ResponseStructure<Account>>(rs,HttpStatus.OK);
 				}else {
 					rs.setMsg("You can't Changes same type ");
 					rs.setStatus(HttpStatus.NOT_MODIFIED.value());
 					return new ResponseEntity<ResponseStructure<Account>>(rs,HttpStatus.NOT_MODIFIED);
 				}
-			}else {
+			}else if(atype==2)
+			{
 				if (a.getAtype()!=AccountType.Current_Account) {
 					a.setAtype(AccountType.Current_Account);
 					rs.setMsg("Changed Successfully");
 					rs.setStatus(HttpStatus.OK.value());
+					return new ResponseEntity<ResponseStructure<Account>>(rs,HttpStatus.OK);
 				}else {
 					rs.setMsg("You can't Changes same type ");
 					rs.setStatus(HttpStatus.NOT_MODIFIED.value());
 					return new ResponseEntity<ResponseStructure<Account>>(rs,HttpStatus.NOT_MODIFIED);
 				}
+			}else { 
+				rs.setMsg("You are input is invalid");
+				rs.setStatus(HttpStatus.BAD_REQUEST.value());
+				return new ResponseEntity<ResponseStructure<Account>>(rs,HttpStatus.BAD_REQUEST);
+			
 			}
-		}
-		return new ResponseEntity<ResponseStructure<Account>>(rs,HttpStatus.OK);
+		}return null;
 	}
 	
 }

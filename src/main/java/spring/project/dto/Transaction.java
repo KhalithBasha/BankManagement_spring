@@ -1,6 +1,6 @@
 package spring.project.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ public class Transaction {
 	private int id;
 	private long amount;
 	private int ToAccount;
-	private Date DateTime;
+	private LocalDateTime DateTime;
 	private TransactionType Ttype;
 	private TranstionStatus Tstatus;
 }

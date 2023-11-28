@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import spring.project.Config.ResponseStructure;
-import spring.project.Exception.ManagerNotFound;
 import spring.project.Exception.UserNotFound;
 import spring.project.dao.ManagerDao;
 import spring.project.dao.UserDao;
@@ -28,9 +27,9 @@ public class UserService {
 		ResponseStructure<User> rs = new ResponseStructure<>();
 		Manager m = mdao.loginManager(mname, mpass);
 		Branch b = m.getBranch();
-		if (m!=null) {
+		if (m != null) {
 			Account a = new Account();
-			if (Acctype==1) {
+			if (Acctype==2) {
 				a.setAtype(AccountType.Current_Account);
 			}
 			else {
@@ -46,8 +45,9 @@ public class UserService {
 			rs.setMsg("User Saved Successfully");
 			rs.setStatus(HttpStatus.CREATED.value());
 			return new ResponseEntity<ResponseStructure<User>>(rs,HttpStatus.CREATED);
+		}else {
+			return null;
 		}
-		throw new ManagerNotFound("Name Or Password is Invalid");
 	}
 	
 	public ResponseEntity<ResponseStructure<User>> findUser(int id){

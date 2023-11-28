@@ -25,15 +25,15 @@ public class Branch {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String bname;
+	private String name;
 	private String ifsc;
+	@OneToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
-	@OneToMany
 	private List<User> listuser;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Bank bank;
 	@JsonIgnore
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Address adrs;
 	@OneToOne
 	private Manager mng;

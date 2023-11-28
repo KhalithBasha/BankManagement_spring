@@ -37,8 +37,8 @@ public class BranchDao {
 	public Branch updateBranch(Branch b, int id) {
 		Branch exBranch = findBranch(id);
 		if (exBranch!=null) {
-			if (b.getBname()==null) {
-				b.setBname(exBranch.getBname());
+			if (b.getName()==null) {
+				b.setName(exBranch.getName());
 			}
 			if (b.getIfsc()==null) {
 				b.setIfsc(exBranch.getIfsc());

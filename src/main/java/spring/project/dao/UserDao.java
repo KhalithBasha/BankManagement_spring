@@ -37,8 +37,8 @@ public class UserDao {
 	public User updateUser(User u, int id) {
 		User exUser = findUser(id);
 		if (exUser!=null) {
-			if (u.getUname()==null) {
-				u.setUname(exUser.getUname());
+			if (u.getName()==null) {
+				u.setName(exUser.getName());
 			}
 			if (u.getAcc()==null) {
 				u.setAcc(exUser.getAcc());

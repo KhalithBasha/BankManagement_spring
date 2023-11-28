@@ -87,13 +87,12 @@ public class ManagerService {
 				rs.setMsg("Login Successful");
 				rs.setStatus(HttpStatus.OK.value());
 				return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.OK );
+			}else {
+				rs.setMsg("Login Failed Due to Invalid Password");
+				rs.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
+				return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.NOT_ACCEPTABLE);
 			}
-			rs.setData(m);
-			rs.setMsg("Login Failed Due to Invalid Password");
-			rs.setStatus(HttpStatus.NOT_FOUND.value());
-			return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.NOT_FOUND);
 		}
-		rs.setData(m);
 		rs.setMsg("Login Failed Due to Manager Name Not matching");
 		rs.setStatus(HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<ResponseStructure<Manager>>(rs,HttpStatus.NOT_FOUND );

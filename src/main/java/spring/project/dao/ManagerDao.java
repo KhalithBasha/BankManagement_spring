@@ -65,6 +65,7 @@ public class ManagerDao {
 			if (exManager.getPassword().equals(password)) {
 				return exManager;
 			}
+			return null;
 		}return null;
 	}
 
